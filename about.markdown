@@ -4,7 +4,7 @@ title: About
 permalink: /about/
 ---
 
-I am a Software Engineer with over 10 years of software development experience. 
+I am a Software Engineer with over 10 years of experience. 
 
 During the day, I love working on some of the most difficult and challenging problems I can put my hands on. I am motivated by the impact of my work on customers and stakeholders.
 
