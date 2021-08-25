@@ -13,6 +13,12 @@ To me a great technical interviewer possess the following qualities:
 
 ### Makes the candidate feel welcome and relaxed 😌
 
+It should not come as a surprise that interviews can be nerve wracking, especially for a subset of people. Just because a candidate is nervous is not indication that they are not a good candidate for the position they are being interviewed for. If we are an interviewer want to ensure that we can find the best fit for the job, we need to create the right environment for the candidate to showcase their skills.
+
+If it's an hour long interview, I reserve the first few minutes (up to five minutes) to make small talk, icebreakers, introduce each other and at times chat about things not on the agenda. I strive to create an environment as such the candidate would consider me their co-worker and during the interview, which in turn helps me gather enough data points to evaluate them. If the candidate finds me intimidating (for whatsoever reason), they might not talk through their problem, which reduces their chances of success.
+
+While the bulk of the responsibility does fall on the candidate, interviewers represent their employer and have a moral obligation to meet the candidate halfway on responsibilities. Every interview taken up by an interviewer is an hour they are not working, which makes it important that we utilize this time to the best of our abilities.
+
 ### Outlines the structure of the interview 📓
 
 Different parts of the interview are aimed at understanding different aspects of a candidate's skillset. Some interviews can be pure behavioral, some can be system design, some are algorithms or data structures. Some interviews can be a mix of them. It's imperative for an interviewer to be clear what this specific interview will entail.
