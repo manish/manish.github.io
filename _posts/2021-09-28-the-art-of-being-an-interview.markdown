@@ -1,13 +1,13 @@
 ---
 layout: post
 title:  "The art of being an interviewer"
-date:   2021-08-18 00:12:02 -0400
+date:   2021-09-28 00:12:02 -0400
 categories: jekyll update
 ---
 
 I have been involved in quite a lot of Software Engineer interviews in my life and have seen myself on both the sides - as an interviewer and as a candidate. Over ten years of experience, it's much more clearer that the outcome depends not just on the skills which the candidate brings, but surprisingly the quality of the interviewer is a non-trivial factor, which cannot be ignored. The interviewer sets the stage of the interview and it makes a huge difference in the talent selection process.
 
-Over years, I have put quite a lot of effort in improving my interviewing skills, in an effort to make sure that I don't let prospective candidates down. A lot of interviews I conduct are college graduates with less than regular skills. This means that the interviewer has to play a much larger role in the interview.
+Over years, I have put quite a lot of time in improving my interviewing skills, in an effort to make sure that I don't let down the prospective candidates. Quite a lot of interviews I conduct are for college graduates with atypical resumes devoid of usual work experience. This means that the interviewer has to play a much larger role in the interview.
 
 To me a great technical interviewer possess the following qualities:
 
