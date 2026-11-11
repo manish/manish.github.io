@@ -10,5 +10,8 @@
   "dependencies": {
     "astro": "^7.3.8",
     "fuse.js": "^7.5.0"
+  },
+  "engines": {
+    "node": ">=22.12.0"
   }
 }
