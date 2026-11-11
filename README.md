@@ -6,8 +6,8 @@ Built with [Astro](https://astro.build) and published to GitHub Pages by
 
 ## Adding a book
 
-Add one JSON file to `data/books/` and open a pull request. The file name is
-the book's URL: `data/books/the-martian.json` becomes `/books/the-martian/`.
+Add one JSON file to `books/` and open a pull request. The file name is
+the book's URL: `books/the-martian.json` becomes `/books/the-martian/`.
 
 ```json
 {
@@ -35,15 +35,15 @@ the book's URL: `data/books/the-martian.json` becomes `/books/the-martian/`.
 - `reasons` each finish the sentence "You should read this if you…". They are what the search box matches.
 - `genres`, `themes` and `length` are free-form tags. A new tag shows up as a filter automatically.
 - `cover` is optional. Without it, or if the image fails to load, a generated cover is shown.
-- `series` and `universe` are optional and refer to file names in `data/series/` and `data/universes/`.
+- `series` and `universe` are optional and refer to file names in `series/` and `universes/`.
 
 ## Series and universes
 
-A series is an ordered set of books: `data/series/<slug>.json` with `name`,
+A series is an ordered set of books: `series/<slug>.json` with `name`,
 and optionally `author`, `description` and `universe`. Books join it with
 `"series": "<slug>"` and `"seriesOrder"`.
 
-A universe groups series that share a world: `data/universes/<slug>.json`
+A universe groups series that share a world: `universes/<slug>.json`
 with `name`, and optionally `author` and `description`. A series joins it with
 `"universe": "<slug>"`; a standalone book can join one directly the same way.
 
