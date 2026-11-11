@@ -1,7 +1,7 @@
 ---
-import Base from '../../layouts/Base.astro';
-import BookCard from '../../components/BookCard.astro';
-import { getUniverses, seriesInUniverse, booksInSeries, looseBooksInUniverse } from '../../lib/data.js';
+import Base from '../../src/layouts/Base.astro';
+import BookCard from '../components/BookCard.astro';
+import { getUniverses, seriesInUniverse, booksInSeries, looseBooksInUniverse } from '../lib/data.js';
 
 export function getStaticPaths() {
   return getUniverses().map((universe) => ({ params: { slug: universe.slug }, props: { universe } }));
@@ -23,7 +23,7 @@ const loose = looseBooksInUniverse(universe.slug);
   {seriesList.map((series) => (
     <section class="shelf">
       <h2>
-        <a href={`/series/${series.slug}/`}>{series.name}</a>
+        <a href={`/books/series/${series.slug}/`}>{series.name}</a>
       </h2>
       <ul class="book-grid">
         {booksInSeries(series.slug).map((book) => (

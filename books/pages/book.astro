@@ -1,7 +1,7 @@
 ---
-import Base from '../../layouts/Base.astro';
-import Cover from '../../components/Cover.astro';
-import { getBooks, findSeries, universeOf } from '../../lib/data.js';
+import Base from '../../src/layouts/Base.astro';
+import Cover from '../components/Cover.astro';
+import { getBooks, findSeries, universeOf } from '../lib/data.js';
 
 export function getStaticPaths() {
   return getBooks().map((book) => ({ params: { slug: book.slug }, props: { book } }));
@@ -36,13 +36,13 @@ const tags = [...book.genres, book.length, book.fiction ? 'fiction' : 'non-ficti
           {series && (
             <>
               {book.seriesOrder ? `Book ${book.seriesOrder} of ` : 'Part of '}
-              <a href={`/series/${series.slug}/`}>{series.name}</a>
+              <a href={`/books/series/${series.slug}/`}>{series.name}</a>
             </>
           )}
           {series && universe && ' · '}
           {universe && (
             <>
-              <a href={`/universes/${universe.slug}/`}>{universe.name}</a> universe
+              <a href={`/books/universes/${universe.slug}/`}>{universe.name}</a> universe
             </>
           )}
         </p>

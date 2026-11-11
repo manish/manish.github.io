@@ -1,7 +1,7 @@
 ---
 import Base from '../layouts/Base.astro';
-import Cover from '../components/Cover.astro';
-import { getBooks } from '../lib/data.js';
+import Cover from '../../books/components/Cover.astro';
+import { getBooks } from '../../books/lib/data.js';
 
 const shelf = getBooks().slice(0, 5);
 ---

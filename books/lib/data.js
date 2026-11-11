@@ -1,4 +1,4 @@
-// Loads every JSON file under /books, /series and /universes and checks it, so a bad pull request
+// Loads every JSON file under /books/data and checks it, so a bad pull request
 // fails the build instead of publishing a broken page.
 
 const slugOf = (path) => path.split('/').pop().replace(/\.json$/, '');
@@ -7,9 +7,9 @@ function load(modules) {
   return Object.entries(modules).map(([path, mod]) => ({ slug: slugOf(path), ...mod.default }));
 }
 
-const books = load(import.meta.glob('../../books/*.json', { eager: true }));
-const series = load(import.meta.glob('../../series/*.json', { eager: true }));
-const universes = load(import.meta.glob('../../universes/*.json', { eager: true }));
+const books = load(import.meta.glob('../data/books/*.json', { eager: true }));
+const series = load(import.meta.glob('../data/series/*.json', { eager: true }));
+const universes = load(import.meta.glob('../data/universes/*.json', { eager: true }));
 
 const errors = [];
 const isList = (v) => Array.isArray(v) && v.every((x) => typeof x === 'string' && x.trim());
@@ -17,7 +17,7 @@ const seriesSlugs = new Set(series.map((s) => s.slug));
 const universeSlugs = new Set(universes.map((u) => u.slug));
 
 for (const b of books) {
-  const at = `books/${b.slug}.json`;
+  const at = `books/data/books/${b.slug}.json`;
   for (const key of ['title', 'author', 'length']) {
     if (typeof b[key] !== 'string' || !b[key].trim()) errors.push(`${at}: "${key}" is required`);
   }
@@ -26,16 +26,16 @@ for (const b of books) {
     if (!isList(b[key]) || b[key].length === 0) errors.push(`${at}: "${key}" must be a non-empty list of text`);
   }
   if (b.dislikes !== undefined && !isList(b.dislikes)) errors.push(`${at}: "dislikes" must be a list of text`);
-  if (b.series && !seriesSlugs.has(b.series)) errors.push(`${at}: series "${b.series}" has no file in series`);
-  if (b.universe && !universeSlugs.has(b.universe)) errors.push(`${at}: universe "${b.universe}" has no file in universes`);
+  if (b.series && !seriesSlugs.has(b.series)) errors.push(`${at}: series "${b.series}" has no file in books/data/series`);
+  if (b.universe && !universeSlugs.has(b.universe)) errors.push(`${at}: universe "${b.universe}" has no file in books/data/universes`);
 }
 for (const s of series) {
-  const at = `series/${s.slug}.json`;
+  const at = `books/data/series/${s.slug}.json`;
   if (!s.name) errors.push(`${at}: "name" is required`);
-  if (s.universe && !universeSlugs.has(s.universe)) errors.push(`${at}: universe "${s.universe}" has no file in universes`);
+  if (s.universe && !universeSlugs.has(s.universe)) errors.push(`${at}: universe "${s.universe}" has no file in books/data/universes`);
 }
 for (const u of universes) {
-  if (!u.name) errors.push(`universes/${u.slug}.json: "name" is required`);
+  if (!u.name) errors.push(`books/data/universes/${u.slug}.json: "name" is required`);
 }
 if (errors.length) throw new Error(`Invalid catalogue data:\n- ${errors.join('\n- ')}`);
 

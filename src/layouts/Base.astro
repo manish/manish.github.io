@@ -23,7 +23,7 @@ const pageTitle = title ? `${title} · Manish Sinha` : 'Manish Sinha';
       <a class="wordmark" href="/">Manish Sinha</a>
       <nav>
         <a href="/" aria-current={path === '/' ? 'page' : undefined}>About</a>
-        <a href="/books/" aria-current={path.startsWith('/books') || path.startsWith('/series') || path.startsWith('/universes') ? 'page' : undefined}>Books</a>
+        <a href="/books/" aria-current={path.startsWith('/books') ? 'page' : undefined}>Books</a>
       </nav>
     </header>
     <main>

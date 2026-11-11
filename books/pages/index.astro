@@ -1,7 +1,7 @@
 ---
-import Base from '../../layouts/Base.astro';
-import BookCard from '../../components/BookCard.astro';
-import { getBooks } from '../../lib/data.js';
+import Base from '../../src/layouts/Base.astro';
+import BookCard from '../components/BookCard.astro';
+import { getBooks } from '../lib/data.js';
 
 const books = getBooks();
 
