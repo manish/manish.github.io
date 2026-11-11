@@ -1,0 +1,31 @@
+---
+import Cover from './Cover.astro';
+const { book, note } = Astro.props;
+---
+
+<li class="card" data-slug={book.slug}>
+  <a href={`/books/${book.slug}/`}>
+    <Cover book={book} />
+    <h3>{book.title}</h3>
+    <p class="author">{book.author}</p>
+    {note && <p class="note">{note}</p>}
+    <p class="match" hidden></p>
+  </a>
+</li>
+
+<style>
+  .card a { display: block; text-decoration: none; }
+  .card :global(.cover) { transition: transform 0.25s ease; }
+  .card a:hover :global(.cover),
+  .card a:focus-visible :global(.cover) { transform: translateY(-6px) rotate(var(--tilt)); }
+  h3 { font-size: 1.15rem; margin-top: 0.9rem; }
+  .author, .note { margin: 0.2rem 0 0; color: var(--ink-soft); font-size: 0.95rem; }
+  .match {
+    margin: 0.5rem 0 0;
+    padding-left: 0.6rem;
+    border-left: 2px solid var(--accent);
+    font-style: italic;
+    font-size: 0.92rem;
+    line-height: 1.35;
+  }
+</style>

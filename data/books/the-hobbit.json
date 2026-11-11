@@ -1,0 +1,36 @@
+{
+  "title": "The Hobbit",
+  "author": "J.R.R. Tolkien",
+  "year": 1937,
+  "cover": "https://covers.openlibrary.org/b/id/14627509-L.jpg",
+  "genres": [
+    "fantasy",
+    "classic",
+    "adventure"
+  ],
+  "length": "medium",
+  "fiction": true,
+  "themes": [
+    "adventure",
+    "courage",
+    "home",
+    "greed",
+    "friendship"
+  ],
+  "goodreads": "https://www.goodreads.com/search?q=The+Hobbit+J.R.R.+Tolkien",
+  "amazon": "https://www.amazon.com/s?k=The+Hobbit+J.R.R.+Tolkien&i=stripbooks",
+  "publisherDescription": "",
+  "description": "Bilbo Baggins, who likes his armchair, is talked into joining thirteen dwarves and a wizard on a journey to take a mountain back from a dragon.",
+  "reasons": [
+    "want a warm, funny fantasy adventure with a reluctant hero",
+    "want the gentlest way into Middle-earth",
+    "like stories you could read aloud",
+    "enjoy riddles, dragons and maps"
+  ],
+  "dislikes": [
+    "Most of the thirteen dwarves are interchangeable",
+    "The storybook narrator can feel twee",
+    "Problems are often solved by a lucky rescue"
+  ],
+  "universe": "middle-earth"
+}

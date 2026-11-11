@@ -1,0 +1,256 @@
+---
+import Base from '../../layouts/Base.astro';
+import BookCard from '../../components/BookCard.astro';
+import { getBooks } from '../../lib/data.js';
+
+const books = getBooks();
+
+// Tag lists come from whatever the book files contain, most used first.
+function tally(pick) {
+  const counts = new Map();
+  for (const b of books) for (const v of pick(b)) counts.set(v, (counts.get(v) ?? 0) + 1);
+  return [...counts].sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]));
+}
+const kindOf = (b) => (b.fiction ? 'fiction' : 'non-fiction');
+const groups = [
+  { id: 'genres', label: 'Genre', options: tally((b) => b.genres) },
+  { id: 'themes', label: 'Theme', options: tally((b) => b.themes) },
+  { id: 'length', label: 'Length', options: tally((b) => [b.length]) },
+  { id: 'kind', label: 'Kind', options: tally((b) => [kindOf(b)]) },
+];
+
+const index = books.map((b) => ({
+  slug: b.slug,
+  title: b.title,
+  author: b.author,
+  reasons: b.reasons,
+  genres: b.genres,
+  themes: b.themes,
+  length: [b.length],
+  kind: [kindOf(b)],
+}));
+---
+
+<Base title="Books" description="Books I've read, and who each one is for.">
+  <section class="intro">
+    <p class="eyebrow">The catalogue</p>
+    <h1>Find a book by <em>why</em> you'd read it.</h1>
+    <p class="lede">
+      Every book here comes with the reasons you might want it. Describe what you're in the mood for and the closest
+      matches float to the top.
+    </p>
+
+    <form class="search" role="search" onsubmit="return false">
+      <label for="q">You should read this if you…</label>
+      <input id="q" name="q" type="search" placeholder="want expansive sci-fi" autocomplete="off" spellcheck="false" />
+    </form>
+  </section>
+
+  <section class="filters" aria-label="Filters">
+    {groups.map((g) => (
+      <div class="group">
+        <h2>{g.label}</h2>
+        <div class="chips">
+          {g.options.map(([value, count]) => (
+            <button type="button" class="chip" data-group={g.id} data-value={value} aria-pressed="false">
+              {value} <span>{count}</span>
+            </button>
+          ))}
+        </div>
+      </div>
+    ))}
+  </section>
+
+  <p class="status" aria-live="polite">
+    <span id="count">{books.length} books</span>
+    <button type="button" id="clear" hidden>Clear all</button>
+  </p>
+
+  <ul class="book-grid" id="grid">
+    {books.map((book) => <BookCard book={book} />)}
+  </ul>
+  <p id="empty" hidden>Nothing matches yet. Try fewer words, or clear a filter.</p>
+
+  <script type="application/json" id="book-index" set:html={JSON.stringify(index)} />
+</Base>
+
+<script>
+  import Fuse from 'fuse.js';
+
+  const books = JSON.parse(document.getElementById('book-index').textContent);
+  const grid = document.getElementById('grid');
+  const input = document.getElementById('q');
+  const count = document.getElementById('count');
+  const clear = document.getElementById('clear');
+  const empty = document.getElementById('empty');
+  const chips = [...document.querySelectorAll('.chip')];
+  const cards = new Map([...grid.children].map((li) => [li.dataset.slug, li]));
+
+  const fuse = new Fuse(books, {
+    keys: [
+      { name: 'reasons', weight: 3 },
+      { name: 'title', weight: 2 },
+      { name: 'author', weight: 1 },
+    ],
+    includeScore: true,
+    includeMatches: true,
+    ignoreLocation: true,
+    threshold: 0.34,
+    minMatchCharLength: 2,
+  });
+
+  // Each word is matched on its own and a book must match every word, so
+  // "expansive scifi" finds a reason that says "expansive, big-idea sci-fi".
+  function search(query) {
+    const words = query.toLowerCase().split(/\s+/).filter((w) => w.length > 1);
+    if (!words.length) return null;
+    let hits = null;
+    for (const word of words) {
+      const found = new Map();
+      for (const r of fuse.search(word)) {
+        const reasons = r.matches.filter((m) => m.key === 'reasons').map((m) => m.refIndex);
+        found.set(r.item.slug, { score: r.score, reasons });
+      }
+      if (hits === null) {
+        hits = new Map([...found].map(([slug, f]) => [slug, { score: f.score, reasons: [...f.reasons] }]));
+      } else {
+        for (const [slug, h] of hits) {
+          const f = found.get(slug);
+          if (!f) hits.delete(slug);
+          else {
+            h.score += f.score;
+            h.reasons.push(...f.reasons);
+          }
+        }
+      }
+    }
+    return hits;
+  }
+
+  // The reason that the most search words landed on.
+  function bestReason(book, reasonHits) {
+    if (!reasonHits.length) return '';
+    const tally = new Map();
+    for (const i of reasonHits) tally.set(i, (tally.get(i) ?? 0) + 1);
+    const [top] = [...tally].sort((a, b) => b[1] - a[1] || a[0] - b[0])[0];
+    return book.reasons[top];
+  }
+
+  function activeFilters() {
+    const active = {};
+    for (const chip of chips) {
+      if (chip.getAttribute('aria-pressed') === 'true') (active[chip.dataset.group] ??= []).push(chip.dataset.value);
+    }
+    return active;
+  }
+
+  function render() {
+    const query = input.value.trim();
+    const hits = search(query);
+    const active = activeFilters();
+    const groups = Object.entries(active);
+
+    // Within a group any selected tag matches; across groups all must.
+    let shown = books.filter(
+      (b) => (!hits || hits.has(b.slug)) && groups.every(([group, values]) => values.some((v) => b[group].includes(v)))
+    );
+    if (hits) shown.sort((a, b) => hits.get(a.slug).score - hits.get(b.slug).score);
+
+    for (const li of cards.values()) li.hidden = true;
+    for (const book of shown) {
+      const li = cards.get(book.slug);
+      const match = li.querySelector('.match');
+      const reason = hits ? bestReason(book, hits.get(book.slug).reasons) : '';
+      match.textContent = reason ? `…${reason}` : '';
+      match.hidden = !reason;
+      li.hidden = false;
+      grid.append(li);
+    }
+
+    count.textContent = `${shown.length} ${shown.length === 1 ? 'book' : 'books'}`;
+    empty.hidden = shown.length > 0;
+    clear.hidden = !query && groups.length === 0;
+
+    const url = new URL(location.href);
+    if (query) url.searchParams.set('q', query);
+    else url.searchParams.delete('q');
+    history.replaceState(null, '', url);
+  }
+
+  for (const chip of chips) {
+    chip.addEventListener('click', () => {
+      chip.setAttribute('aria-pressed', chip.getAttribute('aria-pressed') === 'true' ? 'false' : 'true');
+      render();
+    });
+  }
+  input.addEventListener('input', render);
+  clear.addEventListener('click', () => {
+    input.value = '';
+    for (const chip of chips) chip.setAttribute('aria-pressed', 'false');
+    render();
+  });
+
+  input.value = new URL(location.href).searchParams.get('q') ?? '';
+  render();
+</script>
+
+<style>
+  .intro { padding: 3rem 0 2rem; max-width: 46rem; }
+  h1 { font-size: clamp(2.4rem, 6.5vw, 4.5rem); font-weight: 300; letter-spacing: -0.02em; }
+  h1 em { color: var(--accent); }
+  .lede { color: var(--ink-soft); max-width: 36rem; margin: 1.25rem 0 2rem; }
+  .search label {
+    display: block;
+    font-family: var(--display);
+    font-style: italic;
+    font-size: 1.35rem;
+    margin-bottom: 0.4rem;
+  }
+  .search input {
+    width: 100%;
+    font: inherit;
+    font-size: 1.35rem;
+    color: var(--ink);
+    background: transparent;
+    border: 0;
+    border-bottom: 2px solid var(--ink);
+    border-radius: 0;
+    padding: 0.5rem 0;
+    outline: none;
+  }
+  .search input::placeholder { color: var(--ink-soft); opacity: 0.7; font-style: italic; }
+  .search input:focus { border-bottom-color: var(--accent); }
+
+  .filters {
+    display: grid;
+    gap: 1rem;
+    padding: 1.5rem 0;
+    border-top: 1px solid var(--rule);
+    border-bottom: 1px solid var(--rule);
+  }
+  .group { display: grid; grid-template-columns: 5rem 1fr; gap: 0.75rem; align-items: baseline; }
+  .group h2 { font-family: var(--body); font-size: 0.78rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--ink-soft); }
+  .chips { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+  .chip {
+    font: inherit;
+    font-size: 0.9rem;
+    line-height: 1;
+    padding: 0.45em 0.8em;
+    color: var(--ink);
+    background: transparent;
+    border: 1px solid var(--rule);
+    border-radius: 999px;
+    cursor: pointer;
+  }
+  .chip span { color: var(--ink-soft); font-size: 0.8em; margin-left: 0.2em; }
+  .chip:hover { border-color: var(--ink); }
+  .chip[aria-pressed='true'] { background: var(--ink); color: var(--paper); border-color: var(--ink); }
+  .chip[aria-pressed='true'] span { color: inherit; opacity: 0.7; }
+  @media (max-width: 36rem) {
+    .group { grid-template-columns: 1fr; gap: 0.4rem; }
+  }
+
+  .status { display: flex; gap: 1rem; align-items: baseline; color: var(--ink-soft); font-size: 0.95rem; margin: 1.5rem 0; }
+  #clear { font: inherit; color: var(--accent); background: none; border: 0; padding: 0; cursor: pointer; text-decoration: underline; }
+  #empty { font-style: italic; color: var(--ink-soft); }
+</style>

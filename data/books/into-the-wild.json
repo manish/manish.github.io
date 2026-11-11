@@ -1,0 +1,34 @@
+{
+  "title": "Into the Wild",
+  "author": "Jon Krakauer",
+  "year": 1996,
+  "cover": "https://covers.openlibrary.org/b/id/1377482-L.jpg",
+  "genres": [
+    "non-fiction",
+    "biography",
+    "adventure"
+  ],
+  "length": "medium",
+  "fiction": false,
+  "themes": [
+    "wilderness",
+    "idealism",
+    "solitude",
+    "family",
+    "risk"
+  ],
+  "goodreads": "https://www.goodreads.com/search?q=Into+the+Wild+Jon+Krakauer",
+  "amazon": "https://www.amazon.com/s?k=Into+the+Wild+Jon+Krakauer&i=stripbooks",
+  "publisherDescription": "",
+  "description": "Krakauer reconstructs the journey of Chris McCandless, who gave away his savings, walked into the Alaskan bush and did not come out.",
+  "reasons": [
+    "have ever wanted to drop everything and disappear into the outdoors",
+    "like true stories that refuse to give you a simple verdict",
+    "want reporting that reads like a novel",
+    "are drawn to people who take an idea all the way"
+  ],
+  "dislikes": [
+    "Krakauer's own climbing chapters interrupt the story",
+    "It romanticises a death that was largely avoidable"
+  ]
+}

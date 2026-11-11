@@ -1,0 +1,63 @@
+---
+import Base from '../layouts/Base.astro';
+import Cover from '../components/Cover.astro';
+import { getBooks } from '../lib/data.js';
+
+const shelf = getBooks().slice(0, 5);
+---
+
+<Base>
+  <section class="hero">
+    <p class="eyebrow">Hello</p>
+    <h1>I'm Manish. I build software, and I <em>read</em>.</h1>
+  </section>
+
+  <section class="bio">
+    <div class="prose">
+      <p>
+        I'm a software engineer in the San Francisco Bay Area. I like large systems, clear writing, and problems that
+        take more than one sitting to understand.
+      </p>
+      <p>
+        Away from work I read: science fiction with big ideas, the American classics, and the occasional book about
+        how to write better. I keep a <a href="/books/">catalogue of what I've read</a>, with the reasons you might
+        want each one and the things I didn't like.
+      </p>
+      <p class="contact">
+        <a href="https://github.com/manish">GitHub</a>
+        <a href="https://twitter.com/manishsinhav">Twitter</a>
+      </p>
+    </div>
+
+    <a class="shelf" href="/books/" aria-label="Browse the book catalogue">
+      {shelf.map((book) => <Cover book={book} size="sm" />)}
+    </a>
+  </section>
+</Base>
+
+<style>
+  .hero { padding: 4rem 0 3rem; max-width: 52rem; }
+  h1 { font-size: clamp(2.6rem, 7.5vw, 5.5rem); font-weight: 300; letter-spacing: -0.025em; }
+  h1 em { color: var(--accent); }
+  .bio { display: grid; grid-template-columns: minmax(0, 34rem) 1fr; gap: 4rem; align-items: start; }
+  .prose p { margin: 0 0 1.25rem; }
+  .prose p:first-child::first-letter {
+    font-family: var(--display);
+    font-size: 3.6em;
+    line-height: 0.8;
+    float: left;
+    padding: 0.08em 0.1em 0 0;
+    color: var(--accent);
+  }
+  .contact { display: flex; gap: 1.5rem; margin-top: 2rem; font-size: 0.95rem; letter-spacing: 0.12em; text-transform: uppercase; }
+  .shelf { display: flex; justify-content: flex-end; padding-top: 0.5rem; text-decoration: none; }
+  .shelf :global(.cover) { width: 7.5rem; flex: none; margin-left: -2.25rem; transition: transform 0.25s ease; }
+  .shelf :global(.cover:nth-child(odd)) { transform: rotate(-4deg) translateY(0.6rem); }
+  .shelf :global(.cover:nth-child(even)) { transform: rotate(3deg); }
+  .shelf:hover :global(.cover) { transform: rotate(0) translateY(-0.4rem); }
+  @media (max-width: 52rem) {
+    .bio { grid-template-columns: 1fr; gap: 2.5rem; }
+    .shelf { justify-content: flex-start; padding-left: 2.25rem; }
+    .shelf :global(.cover) { width: 5.5rem; }
+  }
+</style>

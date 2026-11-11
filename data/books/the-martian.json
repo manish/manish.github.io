@@ -1,0 +1,34 @@
+{
+  "title": "The Martian",
+  "author": "Andy Weir",
+  "year": 2011,
+  "cover": "https://covers.openlibrary.org/b/id/11447888-L.jpg",
+  "genres": [
+    "sci-fi",
+    "survival"
+  ],
+  "length": "medium",
+  "fiction": true,
+  "themes": [
+    "survival",
+    "problem solving",
+    "isolation",
+    "humour",
+    "space exploration"
+  ],
+  "goodreads": "https://www.goodreads.com/search?q=The+Martian+Andy+Weir",
+  "amazon": "https://www.amazon.com/s?k=The+Martian+Andy+Weir&i=stripbooks",
+  "publisherDescription": "",
+  "description": "An astronaut is left for dead on Mars and has to science his way through staying alive until someone can come back for him.",
+  "reasons": [
+    "want hard sci-fi that is actually funny",
+    "like watching a smart person solve one problem after another",
+    "enjoy engineering detail and realistic space travel",
+    "want an optimistic book about people cooperating"
+  ],
+  "dislikes": [
+    "Mark Watney's jokes all have the same voice and wear thin",
+    "Characters on Earth are thin compared with the Mars sections",
+    "There is very little inner life; it is problem, fix, problem, fix"
+  ]
+}

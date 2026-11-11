@@ -1,0 +1,129 @@
+---
+const { title, description = 'Manish Sinha — software engineer and reader.' } = Astro.props;
+const path = Astro.url.pathname;
+const pageTitle = title ? `${title} · Manish Sinha` : 'Manish Sinha';
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{pageTitle}</title>
+    <meta name="description" content={description} />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..700;1,9..144,300..700&family=Newsreader:ital,opsz,wght@0,6..72,400..600;1,6..72,400..600&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <header class="site-header">
+      <a class="wordmark" href="/">Manish Sinha</a>
+      <nav>
+        <a href="/" aria-current={path === '/' ? 'page' : undefined}>About</a>
+        <a href="/books/" aria-current={path.startsWith('/books') || path.startsWith('/series') || path.startsWith('/universes') ? 'page' : undefined}>Books</a>
+      </nav>
+    </header>
+    <main>
+      <slot />
+    </main>
+    <footer class="site-footer">
+      <span>© {new Date().getFullYear()} Manish Sinha</span>
+      <span>Covers via <a href="https://openlibrary.org">Open Library</a></span>
+    </footer>
+  </body>
+</html>
+
+<style is:global>
+  :root {
+    --paper: #f5efe4;
+    --paper-2: #ece3d3;
+    --ink: #211c16;
+    --ink-soft: #5d5346;
+    --rule: #d8ccb8;
+    --accent: #8f2d1f;
+    --accent-soft: #f0d9cf;
+    --shadow: rgb(60 40 20 / 0.55);
+    --display: 'Fraunces', 'Iowan Old Style', Georgia, serif;
+    --body: 'Newsreader', 'Iowan Old Style', Georgia, serif;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --paper: #15120f;
+      --paper-2: #1f1b16;
+      --ink: #ede5d6;
+      --ink-soft: #a89c8a;
+      --rule: #3a3229;
+      --accent: #e39a72;
+      --accent-soft: #3a241b;
+      --shadow: rgb(0 0 0 / 0.8);
+    }
+  }
+  * { box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; }
+  body {
+    margin: 0;
+    background:
+      radial-gradient(1200px 600px at 85% -10%, var(--accent-soft), transparent 60%),
+      var(--paper);
+    background-attachment: fixed;
+    color: var(--ink);
+    font-family: var(--body);
+    font-size: 1.125rem;
+    line-height: 1.6;
+  }
+  a { color: inherit; text-decoration-color: var(--accent); text-underline-offset: 0.18em; }
+  a:hover { color: var(--accent); }
+  h1, h2, h3 { font-family: var(--display); font-weight: 400; line-height: 1.08; text-wrap: balance; margin: 0; }
+  main { max-width: 72rem; margin: 0 auto; padding: 0 1.25rem 5rem; }
+  .site-header {
+    max-width: 72rem;
+    margin: 0 auto;
+    padding: 1.5rem 1.25rem;
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 1rem;
+  }
+  .wordmark { font-family: var(--display); font-style: italic; font-size: 1.35rem; text-decoration: none; }
+  .site-header nav { display: flex; gap: 1.5rem; font-size: 0.95rem; letter-spacing: 0.12em; text-transform: uppercase; }
+  .site-header nav a { text-decoration: none; padding-bottom: 0.2rem; border-bottom: 1px solid transparent; }
+  .site-header nav a[aria-current='page'] { border-bottom-color: var(--accent); }
+  .site-footer {
+    max-width: 72rem;
+    margin: 0 auto;
+    padding: 2rem 1.25rem 3rem;
+    border-top: 1px solid var(--rule);
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 0.5rem;
+    color: var(--ink-soft);
+    font-size: 0.9rem;
+  }
+  .eyebrow { font-size: 0.8rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--accent); margin: 0 0 0.75rem; }
+  .tag {
+    display: inline-block;
+    font-size: 0.82rem;
+    line-height: 1;
+    padding: 0.4em 0.75em;
+    border: 1px solid var(--rule);
+    border-radius: 999px;
+    color: var(--ink-soft);
+    white-space: nowrap;
+  }
+  .tags { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+  .book-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(10.5rem, 1fr));
+    gap: 2.25rem 1.5rem;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  @media (max-width: 30rem) {
+    .book-grid { grid-template-columns: repeat(2, 1fr); gap: 1.75rem 1rem; }
+  }
+</style>

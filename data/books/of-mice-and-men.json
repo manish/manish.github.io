@@ -1,0 +1,33 @@
+{
+  "title": "Of Mice and Men",
+  "author": "John Steinbeck",
+  "year": 1937,
+  "cover": "https://covers.openlibrary.org/b/id/14319003-L.jpg",
+  "genres": [
+    "literary fiction",
+    "classic",
+    "novella"
+  ],
+  "length": "short",
+  "fiction": true,
+  "themes": [
+    "friendship",
+    "loneliness",
+    "the American dream",
+    "poverty"
+  ],
+  "goodreads": "https://www.goodreads.com/search?q=Of+Mice+and+Men+John+Steinbeck",
+  "amazon": "https://www.amazon.com/s?k=Of+Mice+and+Men+John+Steinbeck&i=stripbooks",
+  "publisherDescription": "",
+  "description": "Two migrant ranch hands, George and Lennie, chase a small dream of owning land, and the dream does not survive the week.",
+  "reasons": [
+    "want a classic you can finish in one sitting",
+    "like stories about friendship under pressure",
+    "want an ending that stays with you for years",
+    "are curious about Steinbeck but not ready for 500 pages"
+  ],
+  "dislikes": [
+    "Almost every character other than George and Lennie is a type rather than a person",
+    "The foreshadowing is heavy enough that the ending is never in doubt"
+  ]
+}

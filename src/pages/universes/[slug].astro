@@ -1,0 +1,54 @@
+---
+import Base from '../../layouts/Base.astro';
+import BookCard from '../../components/BookCard.astro';
+import { getUniverses, seriesInUniverse, booksInSeries, looseBooksInUniverse } from '../../lib/data.js';
+
+export function getStaticPaths() {
+  return getUniverses().map((universe) => ({ params: { slug: universe.slug }, props: { universe } }));
+}
+
+const { universe } = Astro.props;
+const seriesList = seriesInUniverse(universe.slug);
+const loose = looseBooksInUniverse(universe.slug);
+---
+
+<Base title={universe.name} description={universe.description}>
+  <section class="head">
+    <p class="eyebrow">Universe</p>
+    <h1>{universe.name}</h1>
+    {universe.author && <p class="byline">{universe.author}</p>}
+    {universe.description && <p class="lede">{universe.description}</p>}
+  </section>
+
+  {seriesList.map((series) => (
+    <section class="shelf">
+      <h2>
+        <a href={`/series/${series.slug}/`}>{series.name}</a>
+      </h2>
+      <ul class="book-grid">
+        {booksInSeries(series.slug).map((book) => (
+          <BookCard book={book} note={book.seriesOrder ? `Book ${book.seriesOrder}` : undefined} />
+        ))}
+      </ul>
+    </section>
+  ))}
+
+  {loose.length > 0 && (
+    <section class="shelf">
+      {seriesList.length > 0 && <h2>Standalone</h2>}
+      <ul class="book-grid">
+        {loose.map((book) => <BookCard book={book} />)}
+      </ul>
+    </section>
+  )}
+</Base>
+
+<style>
+  .head { padding: 3rem 0 2.5rem; max-width: 42rem; }
+  h1 { font-size: clamp(2.4rem, 6vw, 4.25rem); font-weight: 300; letter-spacing: -0.02em; }
+  .byline { font-size: 1.25rem; color: var(--ink-soft); margin: 0.75rem 0 0; }
+  .lede { margin: 1.25rem 0 0; }
+  .shelf + .shelf { margin-top: 3.5rem; }
+  .shelf h2 { font-style: italic; font-size: 1.8rem; margin-bottom: 1.5rem; }
+  .shelf h2 a { text-decoration: none; }
+</style>
