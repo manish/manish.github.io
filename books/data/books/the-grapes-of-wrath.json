@@ -1,0 +1,30 @@
+{
+  "title": "The Grapes of Wrath",
+  "author": "John Steinbeck",
+  "year": 1939,
+  "cover": "https://covers.openlibrary.org/b/id/12715902-L.jpg",
+  "genres": [
+    "literary fiction",
+    "classic",
+    "historical fiction"
+  ],
+  "length": "long",
+  "fiction": true,
+  "themes": [
+    "family",
+    "poverty",
+    "migration",
+    "injustice",
+    "the American dream"
+  ],
+  "goodreads": "https://www.goodreads.com/search?q=The+Grapes+of+Wrath+John+Steinbeck",
+  "amazon": "https://www.amazon.com/s?k=The+Grapes+of+Wrath+John+Steinbeck&i=stripbooks",
+  "publisherDescription": "",
+  "description": "The Joad family loses their Oklahoma farm in the Dust Bowl and drives west to California, where the promised work turns out to be a trap.",
+  "reasons": [
+    "want a big, angry, humane novel about ordinary people being ground down",
+    "care about where the American dream breaks",
+    "like family sagas where the road itself is a character",
+    "want prose that slows down and looks hard at land and weather"
+  ]
+}

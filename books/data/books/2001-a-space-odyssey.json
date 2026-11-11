@@ -1,0 +1,31 @@
+{
+  "title": "2001: A Space Odyssey",
+  "author": "Arthur C. Clarke",
+  "year": 1968,
+  "cover": "https://covers.openlibrary.org/b/id/11344400-L.jpg",
+  "genres": [
+    "sci-fi",
+    "classic"
+  ],
+  "length": "medium",
+  "fiction": true,
+  "themes": [
+    "first contact",
+    "artificial intelligence",
+    "evolution",
+    "space exploration",
+    "the unknown"
+  ],
+  "goodreads": "https://www.goodreads.com/search?q=2001%3A+A+Space+Odyssey+Arthur+C.+Clarke",
+  "amazon": "https://www.amazon.com/s?k=2001%3A+A+Space+Odyssey+Arthur+C.+Clarke&i=stripbooks",
+  "publisherDescription": "",
+  "description": "A black monolith found on the Moon sends a crewed ship toward the outer planets, with a ship's computer that has its own idea of the mission.",
+  "reasons": [
+    "want expansive, big-idea sci-fi about humanity's place in the universe",
+    "are fascinated by AI that quietly goes wrong",
+    "liked the film and want the parts it left unexplained",
+    "like cool, precise prose about real spaceflight"
+  ],
+  "series": "space-odyssey",
+  "seriesOrder": 1
+}

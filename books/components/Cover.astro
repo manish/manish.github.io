@@ -1,0 +1,44 @@
+---
+// A book cover. The painted fallback (title on a colour field) is always
+// rendered; the real cover image sits on top and removes itself if it fails.
+const { book, size = 'md' } = Astro.props;
+
+let hash = 0;
+for (const ch of book.title + book.author) hash = (hash * 31 + ch.charCodeAt(0)) >>> 0;
+const hue = hash % 360;
+const tilt = ((hash >> 8) % 5) - 2;
+---
+
+<div class={`cover cover-${size}`} style={`--hue:${hue}; --tilt:${tilt}deg`}>
+  <div class="cover-art" aria-hidden="true">
+    <span class="cover-title">{book.title}</span>
+    <span class="cover-author">{book.author}</span>
+  </div>
+  {book.cover && (
+    <img src={book.cover} alt={`Cover of ${book.title}`} loading="lazy" decoding="async" onerror="this.remove()" />
+  )}
+</div>
+
+<style>
+  .cover {
+    position: relative;
+    container-type: inline-size;
+    aspect-ratio: 2 / 3;
+    width: 100%;
+    overflow: hidden;
+    background: linear-gradient(155deg, hsl(var(--hue) 42% 34%), hsl(calc(var(--hue) + 40) 48% 20%));
+    box-shadow: 0 1px 1px rgb(0 0 0 / 0.2), 0 12px 26px -14px var(--shadow);
+  }
+  .cover-art {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 14% 12% 12%;
+    color: hsl(var(--hue) 60% 94%);
+  }
+  .cover-title { font-family: var(--display); font-weight: 900; font-size: clamp(0.9rem, 9cqw, 2rem); line-height: 1.05; text-wrap: balance; }
+  .cover-author { font-size: clamp(0.55rem, 4cqw, 0.8rem); font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; opacity: 0.85; }
+  img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+</style>

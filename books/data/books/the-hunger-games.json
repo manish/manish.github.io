@@ -1,0 +1,32 @@
+{
+  "title": "The Hunger Games",
+  "author": "Suzanne Collins",
+  "year": 2008,
+  "cover": "https://covers.openlibrary.org/b/id/12646537-L.jpg",
+  "genres": [
+    "dystopian",
+    "young adult",
+    "sci-fi"
+  ],
+  "length": "medium",
+  "fiction": true,
+  "themes": [
+    "survival",
+    "inequality",
+    "media and spectacle",
+    "rebellion",
+    "sacrifice"
+  ],
+  "goodreads": "https://www.goodreads.com/search?q=The+Hunger+Games+Suzanne+Collins",
+  "amazon": "https://www.amazon.com/s?k=The+Hunger+Games+Suzanne+Collins&i=stripbooks",
+  "publisherDescription": "",
+  "description": "In a country that sends children to fight to the death on live television, Katniss Everdeen volunteers to take her sister's place.",
+  "reasons": [
+    "want a fast dystopian page-turner with a heroine who makes hard choices",
+    "are interested in how spectacle keeps people in line",
+    "want young adult fiction with real stakes",
+    "like survival stories with a political edge"
+  ],
+  "series": "the-hunger-games",
+  "seriesOrder": 1
+}

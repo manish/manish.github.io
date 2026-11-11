@@ -1,0 +1,38 @@
+---
+import Base from '../../src/layouts/Base.astro';
+import BookCard from '../components/BookCard.astro';
+import { getSeries, booksInSeries, findUniverse } from '../lib/data.js';
+
+export function getStaticPaths() {
+  return getSeries().map((series) => ({ params: { slug: series.slug }, props: { series } }));
+}
+
+const { series } = Astro.props;
+const books = booksInSeries(series.slug);
+const universe = findUniverse(series.universe);
+---
+
+<Base title={series.name} description={series.description}>
+  <section class="head">
+    <p class="eyebrow">Series</p>
+    <h1>{series.name}</h1>
+    {series.author && <p class="byline">{series.author}</p>}
+    {series.description && <p class="lede">{series.description}</p>}
+    {universe && (
+      <p class="belongs">
+        Part of the <a href={`/books/universes/${universe.slug}/`}>{universe.name}</a> universe
+      </p>
+    )}
+  </section>
+
+  <ul class="book-grid">
+    {books.map((book) => <BookCard book={book} note={book.seriesOrder ? `Book ${book.seriesOrder}` : undefined} />)}
+  </ul>
+</Base>
+
+<style>
+  .head { padding: 3rem 0 2.5rem; max-width: 42rem; }
+  .byline { font-family: var(--display); font-style: italic; font-size: 1.4rem; color: var(--ink-soft); margin: 1rem 0 0; }
+  .lede { font-size: 1.1rem; margin: 1.5rem 0 0; }
+  .belongs { color: var(--ink-soft); font-size: 0.95rem; margin: 1rem 0 0; }
+</style>
