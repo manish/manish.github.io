@@ -95,9 +95,30 @@ const index = books.map((b) => ({
     includeScore: true,
     includeMatches: true,
     ignoreLocation: true,
-    threshold: 0.34,
+    threshold: 0.25,
     minMatchCharLength: 2,
   });
+
+  // Words of three letters or fewer are too short to match fuzzily without
+  // noise ("son" would hit "reasons"), so they must start a word exactly.
+  function exactWord(word) {
+    const starts = new RegExp('\\b' + word.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'i');
+    const found = new Map();
+    for (const b of books) {
+      const reasons = b.reasons.flatMap((r, i) => (starts.test(r) ? [i] : []));
+      if (reasons.length || starts.test(b.title) || starts.test(b.author)) found.set(b.slug, { score: 0, reasons });
+    }
+    return found;
+  }
+
+  function fuzzyWord(word) {
+    const found = new Map();
+    for (const r of fuse.search(word)) {
+      const reasons = r.matches.filter((m) => m.key === 'reasons').map((m) => m.refIndex);
+      found.set(r.item.slug, { score: r.score, reasons });
+    }
+    return found;
+  }
 
   // Each word is matched on its own and a book must match every word, so
   // "expansive scifi" finds a reason that says "expansive, big-idea sci-fi".
@@ -106,11 +127,7 @@ const index = books.map((b) => ({
     if (!words.length) return null;
     let hits = null;
     for (const word of words) {
-      const found = new Map();
-      for (const r of fuse.search(word)) {
-        const reasons = r.matches.filter((m) => m.key === 'reasons').map((m) => m.refIndex);
-        found.set(r.item.slug, { score: r.score, reasons });
-      }
+      const found = word.length <= 3 ? exactWord(word) : fuzzyWord(word);
       if (hits === null) {
         hits = new Map([...found].map(([slug, f]) => [slug, { score: f.score, reasons: [...f.reasons] }]));
       } else {
