@@ -6,26 +6,44 @@ const { book, note } = Astro.props;
 <li class="card" data-slug={book.slug}>
   <a href={`/books/${book.slug}/`}>
     <Cover book={book} />
-    <h3>{book.title}</h3>
-    <p class="author">{book.author}</p>
-    {note && <p class="note">{note}</p>}
-    <p class="match" hidden></p>
+    <div class="text">
+      <p class="kicker"></p>
+      <h3>{book.title}</h3>
+      <p class="author">{book.author}</p>
+      {note && <p class="note">{note}</p>}
+      <p class="match" hidden></p>
+    </div>
   </a>
 </li>
 
 <style>
-  .card a { display: block; text-decoration: none; }
-  .card :global(.cover) { transition: transform 0.25s ease; }
+  .card a { display: block; text-decoration: none; color: inherit; }
+  .card :global(.cover) { transition: transform 0.2s ease; }
   .card a:hover :global(.cover),
-  .card a:focus-visible :global(.cover) { transform: translateY(-6px) rotate(var(--tilt)); }
-  h3 { font-size: 1.15rem; margin-top: 0.9rem; }
-  .author, .note { margin: 0.2rem 0 0; color: var(--ink-soft); font-size: 0.95rem; }
-  .match {
-    margin: 0.5rem 0 0;
-    padding-left: 0.6rem;
-    border-left: 2px solid var(--accent);
-    font-style: italic;
-    font-size: 0.92rem;
-    line-height: 1.35;
+  .card a:focus-visible :global(.cover) { transform: translateY(-5px); }
+  .card a:hover h3 { color: var(--accent); }
+  .text { margin-top: 0.9rem; }
+  .kicker { display: none; }
+  h3 { font-size: 1.25rem; }
+  .author, .note { margin: 0.4rem 0 0; color: var(--ink-soft); font-size: 0.7rem; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; }
+  .match { margin: 0.6rem 0 0; font-family: var(--display); font-style: italic; font-size: 0.98rem; line-height: 1.35; }
+
+  /* A wide card runs across two columns with the cover beside the text. */
+  .card.wide { grid-column: span 2; }
+  .card.wide a { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; align-items: center; }
+  .card.wide .text { margin-top: 0; }
+  .card.wide h3 { font-size: clamp(1.4rem, 2.6vw, 2rem); }
+  .card.wide .match { font-size: 1.1rem; }
+
+  /* The featured card is the cover story: full width, largest type. */
+  .card.feature { grid-column: 1 / -1; padding-bottom: 2.75rem; border-bottom: 1px solid var(--ink); }
+  .card.feature a { display: grid; grid-template-columns: minmax(9rem, 17rem) 1fr; gap: clamp(1.5rem, 5vw, 4rem); align-items: center; }
+  .card.feature .text { margin-top: 0; }
+  .card.feature .kicker { display: block; margin: 0 0 0.9rem; font-size: 0.75rem; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; color: var(--accent); }
+  .card.feature h3 { font-size: clamp(1.9rem, 5.5vw, 4rem); font-weight: 900; line-height: 1; letter-spacing: -0.02em; }
+  .card.feature .author { font-size: 0.8rem; margin-top: 0.9rem; }
+  .card.feature .match { margin-top: 1.25rem; font-size: clamp(1.1rem, 2.4vw, 1.7rem); line-height: 1.3; }
+  @media (max-width: 36rem) {
+    .card.feature a { grid-template-columns: 2fr 3fr; gap: 1rem; }
   }
 </style>

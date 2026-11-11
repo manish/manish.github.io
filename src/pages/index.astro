@@ -36,20 +36,11 @@ const shelf = getBooks().slice(0, 5);
 </Base>
 
 <style>
-  .hero { padding: 4rem 0 3rem; max-width: 52rem; }
-  h1 { font-size: clamp(2.6rem, 7.5vw, 5.5rem); font-weight: 300; letter-spacing: -0.025em; }
-  h1 em { color: var(--accent); }
-  .bio { display: grid; grid-template-columns: minmax(0, 34rem) 1fr; gap: 4rem; align-items: start; }
-  .prose p { margin: 0 0 1.25rem; }
-  .prose p:first-child::first-letter {
-    font-family: var(--display);
-    font-size: 3.6em;
-    line-height: 0.8;
-    float: left;
-    padding: 0.08em 0.1em 0 0;
-    color: var(--accent);
-  }
-  .contact { display: flex; gap: 1.5rem; margin-top: 2rem; font-size: 0.95rem; letter-spacing: 0.12em; text-transform: uppercase; }
+  .hero { padding: 3.5rem 0 3rem; max-width: 60rem; }
+  .bio { display: grid; grid-template-columns: minmax(0, 36rem) 1fr; gap: 4rem; align-items: start; padding-top: 2rem; border-top: 4px solid var(--ink); }
+  .prose p { margin: 0 0 1.25rem; font-size: 1.1rem; line-height: 1.7; }
+  .prose p:first-child::first-letter { font-family: var(--display); font-weight: 900; font-size: 3.6em; line-height: 0.8; float: left; padding: 0.08em 0.1em 0 0; }
+  .prose .contact { display: flex; gap: 1.75rem; margin-top: 2rem; font-size: 0.72rem; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; }
   .shelf { display: flex; justify-content: flex-end; padding-top: 0.5rem; text-decoration: none; }
   .shelf :global(.cover) { width: 7.5rem; flex: none; margin-left: -2.25rem; transition: transform 0.25s ease; }
   .shelf :global(.cover:nth-child(odd)) { transform: rotate(-4deg) translateY(0.6rem); }

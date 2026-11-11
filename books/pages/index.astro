@@ -174,15 +174,23 @@ const index = books.map((b) => ({
     if (hits) shown.sort((a, b) => hits.get(a.slug).score - hits.get(b.slug).score);
 
     for (const li of cards.values()) li.hidden = true;
-    for (const book of shown) {
+    shown.forEach((book, i) => {
       const li = cards.get(book.slug);
       const match = li.querySelector('.match');
-      const reason = hits ? bestReason(book, hits.get(book.slug).reasons) : '';
-      match.textContent = reason ? `…${reason}` : '';
+      // Magazine layout: the first book is the cover story, and every sixth
+      // one after it runs wide. Both always show a reason.
+      const feature = i === 0;
+      const wide = i % 6 === 3;
+      li.classList.toggle('feature', feature);
+      li.classList.toggle('wide', wide);
+      li.querySelector('.kicker').textContent = hits ? 'Best match' : 'Featured';
+      const matched = hits ? bestReason(book, hits.get(book.slug).reasons) : '';
+      const reason = matched || (feature || wide ? book.reasons[0] : '');
+      match.textContent = !reason ? '' : feature ? `Read this if you ${reason}.` : `…${reason}`;
       match.hidden = !reason;
       li.hidden = false;
       grid.append(li);
-    }
+    });
 
     count.textContent = `${shown.length} ${shown.length === 1 ? 'book' : 'books'}`;
     empty.hidden = shown.length > 0;
@@ -212,62 +220,49 @@ const index = books.map((b) => ({
 </script>
 
 <style>
-  .intro { padding: 3rem 0 2rem; max-width: 46rem; }
-  h1 { font-size: clamp(2.4rem, 6.5vw, 4.5rem); font-weight: 300; letter-spacing: -0.02em; }
-  h1 em { color: var(--accent); }
-  .lede { color: var(--ink-soft); max-width: 36rem; margin: 1.25rem 0 2rem; }
-  .search label {
-    display: block;
-    font-family: var(--display);
-    font-style: italic;
-    font-size: 1.35rem;
-    margin-bottom: 0.4rem;
-  }
+  .intro { padding: 3rem 0 2.5rem; max-width: 56rem; }
+  .lede { font-family: var(--display); font-style: italic; font-size: clamp(1.1rem, 2vw, 1.35rem); line-height: 1.45; color: var(--ink-soft); max-width: 40rem; margin: 1.5rem 0 2.5rem; }
+  .search label { display: block; font-size: 0.75rem; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; color: var(--accent); margin-bottom: 0.3rem; }
   .search input {
     width: 100%;
-    font: inherit;
-    font-size: 1.35rem;
+    font-family: var(--display);
+    font-style: italic;
+    font-size: clamp(1.4rem, 3.2vw, 2.1rem);
     color: var(--ink);
     background: transparent;
     border: 0;
-    border-bottom: 2px solid var(--ink);
+    border-bottom: 3px solid var(--ink);
     border-radius: 0;
-    padding: 0.5rem 0;
+    padding: 0.4rem 0;
     outline: none;
   }
-  .search input::placeholder { color: var(--ink-soft); opacity: 0.7; font-style: italic; }
+  .search input::placeholder { color: var(--ink-soft); opacity: 0.55; }
   .search input:focus { border-bottom-color: var(--accent); }
 
-  .filters {
-    display: grid;
-    gap: 1rem;
-    margin-top: 4rem;
-    padding: 1.5rem 0 0;
-    border-top: 1px solid var(--rule);
+  .status {
+    display: flex;
+    gap: 1.25rem;
+    align-items: baseline;
+    margin: 0 0 2rem;
+    padding-top: 0.75rem;
+    border-top: 4px solid var(--ink);
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
   }
-  .group { display: grid; grid-template-columns: 5rem 1fr; gap: 0.75rem; align-items: baseline; }
-  .group h2 { font-family: var(--body); font-size: 0.78rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--ink-soft); }
-  .chips { display: flex; flex-wrap: wrap; gap: 0.4rem; }
-  .chip {
-    font: inherit;
-    font-size: 0.9rem;
-    line-height: 1;
-    padding: 0.45em 0.8em;
-    color: var(--ink);
-    background: transparent;
-    border: 1px solid var(--rule);
-    border-radius: 999px;
-    cursor: pointer;
-  }
-  .chip span { color: var(--ink-soft); font-size: 0.8em; margin-left: 0.2em; }
-  .chip:hover { border-color: var(--ink); }
-  .chip[aria-pressed='true'] { background: var(--ink); color: var(--paper); border-color: var(--ink); }
-  .chip[aria-pressed='true'] span { color: inherit; opacity: 0.7; }
-  @media (max-width: 36rem) {
-    .group { grid-template-columns: 1fr; gap: 0.4rem; }
-  }
+  #clear { font: inherit; letter-spacing: inherit; text-transform: inherit; color: var(--accent); background: none; border: 0; padding: 0; cursor: pointer; }
+  #empty { font-family: var(--display); font-style: italic; font-size: 1.3rem; color: var(--ink-soft); }
 
-  .status { display: flex; gap: 1rem; align-items: baseline; color: var(--ink-soft); font-size: 0.95rem; margin: 0 0 1.5rem; padding-top: 1.5rem; border-top: 1px solid var(--rule); }
-  #clear { font: inherit; color: var(--accent); background: none; border: 0; padding: 0; cursor: pointer; text-decoration: underline; }
-  #empty { font-style: italic; color: var(--ink-soft); }
+  .filters { display: grid; gap: 1.1rem; margin-top: 4.5rem; padding-top: 1.5rem; border-top: 4px solid var(--ink); }
+  .group { display: grid; grid-template-columns: 5.5rem 1fr; gap: 0.75rem; align-items: baseline; }
+  .group h2 { font-family: var(--body); font-size: 0.72rem; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; }
+  .chips { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+  .chip { font: inherit; font-size: 0.82rem; line-height: 1; padding: 0.5em 0.75em; color: var(--ink); background: transparent; border: 1px solid var(--ink); cursor: pointer; }
+  .chip span { color: var(--ink-soft); font-size: 0.85em; margin-left: 0.25em; }
+  .chip:hover { background: var(--ink); color: var(--paper); }
+  .chip:hover span { color: inherit; opacity: 0.7; }
+  .chip[aria-pressed='true'] { background: var(--accent); border-color: var(--accent); color: #fff; }
+  .chip[aria-pressed='true'] span { color: inherit; opacity: 0.8; }
+  @media (max-width: 36rem) { .group { grid-template-columns: 1fr; gap: 0.4rem; } }
 </style>
