@@ -46,6 +46,16 @@ const index = books.map((b) => ({
     </form>
   </section>
 
+  <p class="status" aria-live="polite">
+    <span id="count">{books.length} books</span>
+    <button type="button" id="clear" hidden>Clear all</button>
+  </p>
+
+  <ul class="book-grid" id="grid">
+    {books.map((book) => <BookCard book={book} />)}
+  </ul>
+  <p id="empty" hidden>Nothing matches yet. Try fewer words, or clear a filter.</p>
+
   <section class="filters" aria-label="Filters">
     {groups.map((g) => (
       <div class="group">
@@ -60,16 +70,6 @@ const index = books.map((b) => ({
       </div>
     ))}
   </section>
-
-  <p class="status" aria-live="polite">
-    <span id="count">{books.length} books</span>
-    <button type="button" id="clear" hidden>Clear all</button>
-  </p>
-
-  <ul class="book-grid" id="grid">
-    {books.map((book) => <BookCard book={book} />)}
-  </ul>
-  <p id="empty" hidden>Nothing matches yet. Try fewer words, or clear a filter.</p>
 
   <script type="application/json" id="book-index" set:html={JSON.stringify(index)} />
 </Base>
@@ -241,9 +241,9 @@ const index = books.map((b) => ({
   .filters {
     display: grid;
     gap: 1rem;
-    padding: 1.5rem 0;
+    margin-top: 4rem;
+    padding: 1.5rem 0 0;
     border-top: 1px solid var(--rule);
-    border-bottom: 1px solid var(--rule);
   }
   .group { display: grid; grid-template-columns: 5rem 1fr; gap: 0.75rem; align-items: baseline; }
   .group h2 { font-family: var(--body); font-size: 0.78rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--ink-soft); }
@@ -267,7 +267,7 @@ const index = books.map((b) => ({
     .group { grid-template-columns: 1fr; gap: 0.4rem; }
   }
 
-  .status { display: flex; gap: 1rem; align-items: baseline; color: var(--ink-soft); font-size: 0.95rem; margin: 1.5rem 0; }
+  .status { display: flex; gap: 1rem; align-items: baseline; color: var(--ink-soft); font-size: 0.95rem; margin: 0 0 1.5rem; padding-top: 1.5rem; border-top: 1px solid var(--rule); }
   #clear { font: inherit; color: var(--accent); background: none; border: 0; padding: 0; cursor: pointer; text-decoration: underline; }
   #empty { font-style: italic; color: var(--ink-soft); }
 </style>
